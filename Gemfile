@@ -54,6 +54,11 @@ group :development, :test do
   gem 'bundler-audit'
   # Linting
   gem 'rubocop-rails'
+  # Tests
+  gem 'factory_bot_rails'
+  gem 'rspec-rails'
+  # Test Coverage
+  gem 'simplecov', require: false
 end
 
 group :development do
