@@ -9,4 +9,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root 'home#index'
+  get 'subscriptions', to: 'subscriptions#index'
+  resources :contacts, only: %i[new create]
 end

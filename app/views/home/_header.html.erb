@@ -1,0 +1,11 @@
+<header class="container mx-auto py-6 px-10">
+  <div class="flex justify-between items-center">
+    <%= link_to "Market Tracker", root_path, class: 'text-2xl font-bold'%>
+    <nav class="space-x-6">
+      <%= link_to "Home", root_path, class: 'font-bold text-purple-700'%>
+      <%= link_to "About", '', class: 'font-bold text-purple-700'%>
+      <%= link_to "Subscriptions", subscriptions_path, class: 'font-bold text-purple-700', data: {turbo_stream: true} %>
+    </nav>
+    <a href="#" class="bg-purple-600 font-bold text-white py-2 px-4 rounded">Subscribe Now</a>
+  </div>
+</header>

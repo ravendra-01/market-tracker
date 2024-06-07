@@ -59,6 +59,8 @@ group :development, :test do
   gem 'rspec-rails'
   # Test Coverage
   gem 'simplecov', require: false
+  # Debugger
+  gem 'byebug'
 end
 
 group :development do

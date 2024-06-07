@@ -1,0 +1,25 @@
+<div id='contact-us-form' class="mt-8">
+  <h2 class="text-2xl font-bold">Contact Us</h2>
+  <%= form_with model: contact, local: true, class: "mt-4 space-y-4" do |form| %>
+    <% if contact.errors.any? %>
+      <div class="error-area" style="color:red;">
+        <h3 class="text-lg font-bold"> <%= pluralize(contact.errors.count, 'Error') %> prohibited to send your message.</h3>
+        <ul>
+          <% contact.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div>
+      <%= form.text_field :name, placeholder: "Your Name", class: "w-full p-2 border border-purple-400 rounded" %>
+    </div>
+    <div>
+      <%= form.email_field :email, placeholder: "Email Address", class: "w-full p-2 border border-purple-400 rounded" %>
+    </div>
+    <div>
+      <%= form.text_area :message, placeholder: "Your Message", class: "w-full p-2 border border-purple-400 rounded" %>
+    </div>
+    <%= form.submit "Send Message", class: "bg-purple-600 text-white py-2 px-4 rounded cursor-pointer" %>
+  <% end %>
+</div>
