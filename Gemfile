@@ -79,3 +79,11 @@ group :test do
 end
 
 gem 'tailwindcss-rails', '~> 2.6'
+
+gem 'activeadmin'
+# Plus integrations with:
+gem 'cancancan'
+gem 'devise'
+gem 'draper'
+gem 'pundit'
+gem 'sass-rails'
