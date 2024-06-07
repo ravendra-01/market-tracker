@@ -1,6 +1,4 @@
-# frozen_string_literal: true
-
-source 'https://rubygems.org'
+source 'https://rubygems.org' # rubocop:disable Style/FrozenStringLiteralComment
 
 ruby '3.2.2'
 
