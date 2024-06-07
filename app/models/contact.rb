@@ -10,4 +10,8 @@ class Contact < ApplicationRecord
   validates :name, presence: true, length: { maximum: 50 }
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :message, presence: true, length: { maximum: 500 }
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[created_at email message name]
+  end
 end
