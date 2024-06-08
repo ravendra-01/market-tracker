@@ -9,8 +9,7 @@ class UserSubscription < ApplicationRecord
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :start_date, presence: true
   validates :end_date, presence: true
-  validate :start_date_before_end_date
-
+  validate :start_date_before_end_date, if: -> { start_date.present? && end_date.present? }
   def self.ransackable_attributes(_auth_object = nil)
     %w[created_at email end_date id id_value name start_date subscription_id updated_at]
   end

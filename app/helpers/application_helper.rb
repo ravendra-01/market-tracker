@@ -6,4 +6,8 @@ module ApplicationHelper
     class_names += ' line-through' unless subs_feature_ids.include?(feature_id)
     class_names
   end
+
+  def subscription_plan_list
+    Subscription.all
+  end
 end

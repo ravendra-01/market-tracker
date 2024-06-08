@@ -1,39 +1,9 @@
 <div class="w-4/5 min-h-dvh">
   <div class='bg-white min-h-dvh w-full border border-gray-60 rounded-lg shadow-md'>
     <%= render 'header' %>
-    <main id='main-content' class="container mx-auto p-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <h1 class="text-4xl font-bold text-purple-700">We Make The Markets</h1>
-        <h1 class="text-4xl font-bold text-yellow-500">Make Sense</h1>
-        <p class="mt-4 text-gray-700">Our mission is to make sense of what the news means to you and your money. Every day we work to provide the information you need to achieve success in money and in life. We invite you to subscribe to MarketWatch. Support our journalism and join us on the journey to a better financial tomorrow.</p>
-        <br>
-        <h1 class="font-bold text-purple-700">What are the subscriber benefits of a MarketWatch subscription?</h1>
-        <p class="mt-4 text-gray-700">To be a MarketWatch subscriber is to support our journalism and experience MarketWatch at its best. You will gain full access to all of MarketWatch's original reporting. Moreover, a subscription entitles you to an advertising-light reader experience. You will see fewer ads and experience faster load speed. As a paid subscriber you will also gain access to exclusive MarketWatch coverage and special reports.</p>
-        <%= render 'contacts/form', contact: @contact %>
-      </div>
-      <div class="relative p-6">
-        <%= image_tag 'stock.jpg', alt: 'Image', class: 'border-5 rounded-2xl shadow-lg h-full' %>
-      </div>
-    </main>
-    <footer class="bg-white rounded-lg shadow m-4 dark:bg-gray-800">
-      <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-        <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="" class="hover:underline">MarketTracker</a>. All Rights Reserved.
-        </span>
-        <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
-          <li>
-            <a href="#" class="hover:underline me-4 md:me-6">About</a>
-          </li>
-          <li>
-            <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
-          </li>
-          <li>
-            <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
-          </li>
-          <li>
-            <a href="#" class="hover:underline">Contact</a>
-          </li>
-        </ul>
-      </div>
-    </footer>
+    <%= turbo_frame_tag :main_content do %>
+      <%= render 'main', contact: @contact %>
+    <% end %>
+    <%= render 'footer' %>
   </div>
 </div>

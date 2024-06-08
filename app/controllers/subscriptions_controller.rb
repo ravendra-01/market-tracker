@@ -8,7 +8,10 @@ class SubscriptionsController < ApplicationController
   # - For HTML format, it renders the default view.
   # - For Turbo Stream format, it replaces the content of an element with the ID main-content with the rendered partial.
   def index
-    subscriptions = Subscription.includes(:features).all
-    render_turbo_stream('replace', 'main-content', 'subscriptions', { subscriptions: })
+    @subscriptions = Subscription.includes(:features).all
+  end
+
+  def show
+    @subscription = Subscription.find(params[:id])
   end
 end
