@@ -6,8 +6,9 @@
 class Subscription < ApplicationRecord
   has_many :subscription_features
   has_many :features, through: :subscription_features
-  validates_presence_of :name, :price, :plan_type
+  validates_presence_of :name, :plan_type
   enum :plan_type, %i[monthly yearly]
+  monetize :price_cents, allow_nil: true
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[name plan_type]

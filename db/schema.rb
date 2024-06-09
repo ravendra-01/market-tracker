@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_240_607_122_616) do # rubocop:disable Metrics/BlockLength
+ActiveRecord::Schema[7.1].define(version: 20_240_609_060_915) do # rubocop:disable Metrics/BlockLength
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -67,10 +67,11 @@ ActiveRecord::Schema[7.1].define(version: 20_240_607_122_616) do # rubocop:disab
 
   create_table 'subscriptions', force: :cascade do |t|
     t.string 'name'
-    t.decimal 'price', precision: 8, scale: 2
     t.integer 'plan_type'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
+    t.integer 'price_cents', default: 0, null: false
+    t.string 'price_currency', default: 'INR', null: false
   end
 
   create_table 'user_subscriptions', force: :cascade do |t|

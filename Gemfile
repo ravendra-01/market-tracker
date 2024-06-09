@@ -87,3 +87,5 @@ gem 'devise'
 gem 'draper'
 gem 'pundit'
 gem 'sass-rails'
+
+gem 'money-rails'

@@ -4,6 +4,7 @@
 class SubscriptionFeature < ApplicationRecord
   belongs_to :subscription
   belongs_to :feature
+  validates :subscription_id, uniqueness: { scope: :feature_id, message: 'Subscription and feature combination already exists' }
 
   def self.ransackable_associations(_auth_object = nil)
     %w[feature subscription]

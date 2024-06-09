@@ -1,8 +1,8 @@
 <div class="flex flex-col items-center p-6 bg-white border-2 border-purple-700 rounded-lg shadow-md text-center hover:bg-purple-100">
   <h2 class="text-purple-700 font-bold mb-2"><%= subscription.name %></h2>
-  <p class="line-through text-gray-400"><%= "$#{(subscription.price/52).round(2)}/weeks" %></p>
-  <p class="text-2xl font-bold mb-2"><%= "$#{subscription.price}/year" %></p>
-  <p class="text-gray-600 mb-4"><%= "Billed as $#{(subscription.price/52).round(2)} for every week for 1 year" %></p>
+  <p class="line-through text-gray-400"><%= "#{humanized_money_with_symbol((subscription.price/52).round(2))}/weeks" %></p>
+  <p class="text-2xl font-bold mb-2"><%= "#{humanized_money_with_symbol(subscription.price)}/year" %></p>
+  <p class="text-gray-600 mb-4"><%= "Billed as #{humanized_money_with_symbol((subscription.price/52).round(2))} for every week for 1 year" %></p>
   <p class="text-gray-600">Cancel anytime.</p>
   <ul class="mt-4 text-gray-700">
     <% subs_feature_ids = subscription.features.ids%>
