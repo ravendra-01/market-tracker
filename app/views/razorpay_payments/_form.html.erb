@@ -1,0 +1,146 @@
+<div id='user-subscription' class="container mx-auto p-10 min-h-screen w-1/2">
+  <div id="contact-us-form" class="mt-8 bg-white p-6 rounded-lg shadow-lg">
+    <h2 class="text-2xl font-bold mb-4">Subscribe Us</h2>
+    <%= form_with url: payments_create_order_path, method: :post, class: "space-y-4", id: "subscription-form" do |form| %>
+      <% if payment.errors.any? %>
+        <div class="error-area text-red-600 mb-4">
+          <h3 class="text-lg font-bold">
+            <%= pluralize(payment.errors.count, 'Error') %> prohibited this subscription.
+          </h3>
+          <ul class="list-disc list-inside">
+            <% payment.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <div>
+        <%= form.label :subscription_id, "Subscription", class: "block font-medium text-gray-700" %>
+        <%= form.collection_select :subscription_id, subscription_plan_list, :id, :name, {}, { class: "w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-purple-500", id: "subscription_id", data: { controller: "subscriptions" } } %>
+        <div id="subscription_id_error" class="text-red-600"></div>
+      </div>
+      <turbo-frame id="subscription-details" class='p-1'>
+        <%= render partial: 'subscriptions/plan', locals: { subscription: subscription_plan_list.first } %>
+      </turbo-frame>
+      <div>
+        <%= form.label :name, "Name", class: "block font-medium text-gray-700" %>
+        <%= form.text_field :name, placeholder: "Your Name", class: "w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-purple-500", id: "name" %>
+        <div id="name_error" class="text-red-600"></div>
+      </div>
+      <div>
+        <%= form.label :email, "Email", class: "block font-medium text-gray-700" %>
+        <%= form.email_field :email, placeholder: "Email Address", class: "w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-purple-500", id: "email" %>
+        <div id="email_error" class="text-red-600"></div>
+      </div>
+      <div>
+        <%= form.submit "Make Payment", id: "payment-form", class: "bg-purple-600 text-white py-2 px-4 rounded cursor-pointer hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  document.getElementById('payment-form').addEventListener('click', function(e) {
+    e.preventDefault();
+
+    // Clear previous errors
+    document.getElementById('name_error').textContent = '';
+    document.getElementById('email_error').textContent = '';
+    document.getElementById('subscription_id_error').textContent = '';
+
+    // Validate inputs
+    let isValid = true;
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const subscriptionId = document.getElementById('subscription_id').value;
+
+    if (name === '') {
+      document.getElementById('name_error').textContent = 'Name is required';
+      isValid = false;
+    }
+
+    if (email === '') {
+      document.getElementById('email_error').textContent = 'Email is required';
+      isValid = false;
+    }
+
+    if (subscriptionId === '') {
+      document.getElementById('subscription_id_error').textContent = 'Subscription is required';
+      isValid = false;
+    }
+
+    if (!isValid) {
+      return;
+    }
+
+    // Continue with the payment process if validation passes
+    fetch('/payments/create_order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        subscription_id: subscriptionId
+      })
+    })
+    .then(response => {
+      if (!response.ok) {
+        return response.json().then(data => {
+          throw new Error(data.errors.join(', '));
+        });
+      }
+      return response.json();
+    })
+    .then(data => {
+      let options = {
+        "key": data.key,
+        "amount": data.amount,
+        "currency": data.currency,
+        "name": "Market Tracker",
+        "description": data.description,
+        "order_id": data.order_id,
+        "handler": function (response){
+          fetch('/payments/verify_payment', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature,
+              subscription_id: subscriptionId
+            })
+          })
+          .then(response => {
+            if (!response.ok) {
+              return response.json().then(data => {
+                throw new Error(data.error);
+              });
+            }
+            return response.json()
+          })
+          .then(data => {
+            alert(data.message);
+            // Redirect to home page
+            window.location.href = '/';
+          })
+          .catch(error => {
+            console.error('Error:', error.message);
+            alert(error.message);
+          });
+        }
+      };
+      let rzp1 = new Razorpay(options);
+      rzp1.open();
+    })
+    .catch(error => {
+      console.error('Error:', error.message);
+      alert(error.message);
+    });
+  });
+</script>

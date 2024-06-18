@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   root 'home#index'
   # get 'subscriptions', to: 'subscriptions#index'
   post 'contacts', to: 'contacts#create'
+  post 'payments/create_order', to: 'razorpay_payments#create_order'
+  post 'payments/verify_payment', to: 'razorpay_payments#verify_payment'
+  get 'payments/new', to: 'razorpay_payments#new'
   resources :user_subscriptions, only: %i[new create]
   resources :subscriptions, only: %i[index show]
 end

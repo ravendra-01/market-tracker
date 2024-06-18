@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_240_609_060_915) do # rubocop:disable Metrics/BlockLength
+ActiveRecord::Schema[7.1].define(version: 20_240_609_112_234) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -54,6 +54,23 @@ ActiveRecord::Schema[7.1].define(version: 20_240_609_060_915) do # rubocop:disab
     t.text 'description'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
+  end
+
+  create_table 'razorpay_payments', force: :cascade do |t|
+    t.string 'razorpay_order_id'
+    t.integer 'amount_cents', default: 0, null: false
+    t.string 'amount_currency', default: 'INR', null: false
+    t.integer 'status'
+    t.datetime 'paid_at'
+    t.string 'method'
+    t.string 'description'
+    t.json 'notes'
+    t.string 'name'
+    t.string 'email'
+    t.bigint 'subscription_id'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['subscription_id'], name: 'index_razorpay_payments_on_subscription_id'
   end
 
   create_table 'subscription_features', force: :cascade do |t|
