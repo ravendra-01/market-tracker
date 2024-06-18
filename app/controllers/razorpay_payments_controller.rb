@@ -2,15 +2,20 @@
 
 Dotenv.load
 require 'razorpay'
+
+# Setup Razorpay with API credentials
 Razorpay.setup(ENV['RAZORPAY_KEY_ID'], ENV['RAZORPAY_KEY_SECRET'])
+# RazorpayPaymentsController is responsible for handling payments.
 class RazorpayPaymentsController < ApplicationController
   before_action :set_subscription, only: :create_order
 
+  # Initializes a new RazorpayPayment instance for creating a new payment.
   def new
     @payment = RazorpayPayment.new
   end
 
-  def create_order
+  # Creates a new Razorpay order and associates it with a RazorpayPayment.
+  def create_order # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     order_attr = {
       amount: @subscription.price_cents,
       currency: @subscription.price_currency,
@@ -34,6 +39,7 @@ class RazorpayPaymentsController < ApplicationController
     end
   end
 
+  # Verifies the payment signature and processes the successful payment
   def verify_payment
     if valid_signature?
       process_successful_payment
@@ -46,10 +52,13 @@ class RazorpayPaymentsController < ApplicationController
 
   private
 
+  # Only allow a trusted parameter "white list" through.
   def payment_params
     params.permit(:subscription_id, :name, :email)
   end
 
+  # Sets the @subscription instance variable based on the subscription_id parameter
+  # Renders an error JSON response if the subscription is not found
   def set_subscription
     @subscription = Subscription.find(payment_params[:subscription_id])
   rescue ActiveRecord::RecordNotFound
@@ -58,6 +67,8 @@ class RazorpayPaymentsController < ApplicationController
     }, status: :unprocessable_entity
   end
 
+  # Validates the Razorpay payment signature using HMAC SHA256
+  # Returns true if the signature is valid, otherwise false
   def valid_signature?
     payment_id = params[:razorpay_payment_id]
     order_id = params[:razorpay_order_id]
@@ -72,7 +83,12 @@ class RazorpayPaymentsController < ApplicationController
     generated_signature == signature
   end
 
-  def process_successful_payment
+  # Processes a successful payment:
+  # - Finds the RazorpayPayment by the razorpay_order_id parameter
+  # - Creates a new UserSubscription and updates the RazorpayPayment status to 'success'
+  # - Renders JSON response with success message if both actions are successful
+  # - Renders JSON response with error message if any action fails
+  def process_successful_payment # rubocop:disable Metrics/MethodLength
     @payment = RazorpayPayment.find_by(razorpay_order_id: params[:razorpay_order_id])
     unless @payment
       return render json: {
@@ -100,6 +116,7 @@ class RazorpayPaymentsController < ApplicationController
     end
   end
 
+  # Calculates the end date based on the subscription plan type
   def calculate_end_date(plan_type)
     case plan_type
     when 'monthly'

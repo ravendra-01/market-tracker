@@ -4,7 +4,7 @@
 # The table includes columns for order ID, payment amount, status, payment time, method, description, and additional notes.
 # The `amount` column uses the `monetize` method to store money-related values with precision and scale.
 class CreateRazorpayPayment < ActiveRecord::Migration[7.1]
-  def change
+  def change # rubocop:disable Metrics/MethodLength
     create_table :razorpay_payments do |t|
       t.string :razorpay_order_id
       t.monetize :amount

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ContactsController, type: :controller do
+RSpec.describe ContactsController, type: :controller do # rubocop:disable Metrics/BlockLength
   describe 'POST #create' do
     context 'with valid attributes' do
       let(:valid_attributes) { { contact: { name: 'John Doe', email: 'john.doe@example.com', message: 'Hello' } } }
