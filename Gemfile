@@ -30,8 +30,10 @@ group :development, :test do
   gem 'debug', platforms: %i[mri windows]
   gem 'dotenv'
   gem 'factory_bot_rails'
+  gem 'rails-controller-testing'
   gem 'rspec-rails'
   gem 'rubocop-rails'
+  gem 'shoulda-matchers'
   gem 'simplecov', require: false
 end
 
