@@ -18,4 +18,9 @@ Rails.application.routes.draw do
   get 'payments/new', to: 'razorpay_payments#new'
   resources :user_subscriptions, only: %i[new create]
   resources :subscriptions, only: %i[index show]
+
+  get 'api/v1/subscriptions', to: 'api/v1/subscriptions#index'
+  post 'api/v1/razorpay_payments/create_order', to: 'api/v1/razorpay_payments#create_order'
+  post 'api/v1/razorpay_payments/verify_payment', to: 'api/v1/razorpay_payments#verify_payment'
+  post 'api/v1/contacts', to: 'api/v1/contacts#create'
 end

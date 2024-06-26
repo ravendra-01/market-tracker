@@ -3,6 +3,7 @@ source 'https://rubygems.org' # rubocop:disable Style/FrozenStringLiteralComment
 ruby '3.2.2'
 
 gem 'activeadmin'
+gem 'active_model_serializers', '~> 0.10.0'
 gem 'bootsnap', require: false
 gem 'cancancan'
 gem 'devise'
@@ -13,6 +14,7 @@ gem 'money-rails'
 gem 'pg', '~> 1.1'
 gem 'puma', '>= 5.0'
 gem 'pundit'
+gem 'rack-cors'
 gem 'rails', '~> 7.1.3', '>= 7.1.3.3'
 gem 'razorpay'
 gem 'redis', '>= 4.0.1'
